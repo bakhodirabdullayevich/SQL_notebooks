@@ -1,0 +1,25 @@
+{% extends 'index.html' %}
+{% block title %}
+ <title>Tarmoqni o`chirish</title>
+{% endblock title %}
+
+{% block content %}
+<main class="content">
+<div class="container-fluid p-0">
+    <h1 class="h3 mb-3">{{object_instance}}</h1> <p class="text">Tarmoqni o'chirmoqchimisiz?</p>
+        <div class="row">
+            <div class="col-12">
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger mt-3">Xa</button>
+                        <a href="{% url 'meters' %}"> <button type="button" class="btn btn-success mt-3">Yo'q</button></a>
+                    </form>
+
+            </div>
+        </div>
+</div>
+</main>
+{% endblock %}
+
+

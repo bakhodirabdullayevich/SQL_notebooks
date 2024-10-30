@@ -1,0 +1,90 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+<title> Ob`yektlar </title>
+
+{% endblock title %}
+{% block content %}
+<section class="comp-section">
+    <div class="section-header">
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active" aria-current="page">
+                        Qayta tiklangan gaz hajmi
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </section>
+<h4> {{user_organization}} </h4>
+<br>
+
+<form method="GET" action="{% url 'restored_volumes' %}">
+    <label for="year">Year:</label>
+    <input type="number" name="year" id="year" value="{{ selected_year }}" required>
+    
+    <label for="month">Month:</label>
+    <select name="month" id="month" required>
+        <option value="">Select Month</option>
+        {% for i in months %}
+            <option value="{{ i }}" {% if selected_month|add:0 == i %} selected {% endif %}>
+                {{ i }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Filter</button>
+</form>
+
+<div class="card mt-4">
+    <div class="card-body">
+        <caption class="mb-3"> List of restored volume</caption>
+        <table class="table">
+
+    <thead class="">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Davr</th>
+        <th scope="col">O`lchov tarmog`i</th>
+        <th scope="col">EGHU gaz hajmi</th>
+        <th scope="col">KV-0</th>
+        <th scope="col">KV-1</th>
+        <th scope="col">KV-2</th>
+        <th scope="col">KV-3</th>
+        <th scope="col">KV-4</th>
+        <th scope="col">KV-5</th>
+        <th scope="col">KV-6</th>
+        <th scope="col">KV-7</th>
+        <th scope="col">Qayta tiklangan gaz hajmi</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for restored_volume in restored_volumes %}
+      <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{ restored_volume.month }}</td>
+        <td>{{ restored_volume.meter }}</td>
+        <td>{{ restored_volume.flowmeter_volume }}</td>
+        <td>{{ restored_volume.ns_0 }}</td>
+        <td>{{ restored_volume.ns_1 }}</td>
+        <td>{{ restored_volume.ns_2 }}</td>
+        <td>{{ restored_volume.ns_3 }}</td>
+        <td>{{ restored_volume.ns_4 }}</td>
+        <td>{{ restored_volume.ns_5 }}</td>
+        <td>{{ restored_volume.ns_6 }}</td>
+        <td>{{ restored_volume.ns_7 }}</td>
+        <td>{{ restored_volume.restored_volume }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+    </div>
+</div>
+
+
+
+{% endblock content %}

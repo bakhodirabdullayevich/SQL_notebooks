@@ -1,0 +1,26 @@
+{% extends 'index.html' %}
+{% block title %}
+ <title>Sertifikatni o`chirish</title>
+{% endblock title %}
+
+{% block content %}
+<main class="content">
+<div class="container-fluid p-0">
+    <h1 class="h3 mb-3">{{sertificate_instance.meter.name}} {{sertificate_instance.number}}</h1> <p class="text">Sertifikatni o'chirmoqchimisiz?</p>
+        <div class="row">
+            <div class="col-12">
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger mt-3">Xa</button>
+                        <a href="{% url 'meter_details' pk=sertificate_instance.meter.id %}">
+                        <button type="button" class="btn btn-success mt-3">Yo'q</button></a>
+                    </form>
+
+            </div>
+        </div>
+</div>
+</main>
+{% endblock %}
+
+

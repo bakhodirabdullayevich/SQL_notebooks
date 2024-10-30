@@ -1,0 +1,124 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+<title> Ob`yektlar </title>
+
+{% endblock title %}
+{% block content %}
+<section class="comp-section">
+    <div class="section-header">
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active" aria-current="page">
+                        Qayta tiklangan gaz hajmi
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </section>
+<h4> {{user_organization}} </h4>
+<br>
+
+<table class="table table-bordered">
+                <thead>
+                  <tr>
+
+                    <th scope="col">O`lchov tarmog`i</th>
+                    {% for volumes in user_organization.meters.first.volumes.all %}
+                    <th style="writing-mode:vertical-rl; text-orientation:mixed" >
+
+                      {% if today == volumes.period.date|date:"F" %}
+                      <small><a href="#">{{volumes.period.date|date:"m"}}</a></small>
+                      {% else %}
+                      <small>{{volumes.period.date|date:"F"}}</small>
+                      {% endif %}
+
+                    </th>
+                    {% endfor %}
+                       </thead>
+                <tbody>
+                    {% for meter in user_organization.meters.all  %}
+
+
+                  <tr>
+                    <td>{{meter.object}} {{meter.name}}</td>
+                    {% for volume in meter.volumes.all  %}
+                            <td style="height:5px; width: 5px; background-color: black; color: white">{{volume.restored_volume}}</td>
+                    {% endfor %}
+                  </tr>
+                  {% endfor %}
+ </tbody>
+  </table>
+<br>
+
+<div class="row">
+    <div class="col-4">
+    {% for d in data %}
+    <div class="card">
+        <div class="card-body">
+            <a class="link-secondary text-muted" href="#"><i class="fas fa-pencil-alt m-r-5"></i> {{d.meter__meter_id}}</a>
+     - {{d.meter__object__name}} - {{d.meter__name}} - {{d.month|date:"F"}} - - {{d.restored_volume}}
+            </div>
+    </div>
+    {% endfor %}
+        </div>
+    </div>
+
+
+<div class="card mt-4">
+    <div class="card-body">
+        <caption class="mb-3"> List of restored volume</caption>
+        <table class="table table-striped">
+
+    <thead class="">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">
+            O`lchov tarmog`i
+        </th>
+        <th scope="col">Yanvar</th>
+        <th scope="col">Fevral</th>
+        <th scope="col">Mart</th>
+        <th scope="col">Aprel</th>
+        <th scope="col">May</th>
+        <th scope="col">Iyun</th>
+        <th scope="col">Iyul</th>
+        <th scope="col">Avgust</th>
+        <th scope="col">Sentabr</th>
+        <th scope="col">Oktabr</th>
+        <th scope="col">Noyabr</th>
+        <th scope="col">Dekabr</th>
+      </tr>
+    </thead>
+    <tbody>
+   {% for meter in meters %}
+      <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+          <td>{{ meter.object.name }} <br><span> {{ meter.name }} </span> </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+    </div>
+</div>
+
+
+
+{% endblock content %}

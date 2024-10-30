@@ -1,0 +1,88 @@
+{% extends 'index.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}
+<title> Tarmoq ma`lumotlari </title>
+{% endblock title %}
+
+{% block content %}
+<section class="comp-section">
+<div class="section-header">
+</div>
+  <div class="row">
+    <div class="col-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{% url 'objects' %}">Ob`yektlar</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            O`lchov tarmoqlari
+          </li>
+        </ol>
+      </nav>
+    </div>
+   </div>
+</section>
+<main class="content">
+<div class="container-fluid p-0">
+    <h1 class="h3 mb-3">Yangi sertifikat qo`shish </h1>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+
+                    <form method="post" class="card p-3 mt-5" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                            <div class="row">
+                                <div class="col-4">{{form.number|as_crispy_field }}</div>
+                                <div class="col-4">{{form.e|as_crispy_field }}</div>
+                                <div class="col-4">{{form.outer_diameter|as_crispy_field }}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">{{form.d20|as_crispy_field }}</div>
+                                <div class="col-4">{{form.d20_calculated|as_crispy_field }}</div>
+                                <div class="col-4">{{form.temperature|as_crispy_field }}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">{{form.p_max|as_crispy_field }}</div>
+                                <div class="col-4">{{form.pressure|as_crispy_field }}</div>
+                                <div class="col-4">{{form.p_unit|as_crispy_field }}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">{{form.dp_max|as_crispy_field }}</div>
+                                <div class="col-4">{{form.dp_min|as_crispy_field }}</div>
+                                <div class="col-4">{{form.dp_unit|as_crispy_field }}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">{{form.q_max|as_crispy_field }}</div>
+                                <div class="col-4">{{form.q_min|as_crispy_field }}</div>
+                                <div class="col-4">{{form.betta|as_crispy_field }}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">{{form.installed|as_crispy_field }}</div>
+                                <div class="col-4">{{form.installed_date|as_crispy_field }}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">{{form.note|as_crispy_field }}</div>
+                            </div>
+
+                            <div class="row">
+                                 <div class="col">
+                                     <a href="#"><button type="button" class="btn btn-secondary mt-3" >  Bekor qilish </button></a>
+                                    <button type="submit" name="installed_submit" class="btn btn-success mt-3" >Saqlash</button>
+                                 </div>
+                            </div>
+
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+</div>
+</main>
+
+
+
+{% endblock content %}

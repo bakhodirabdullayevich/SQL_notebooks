@@ -1,0 +1,327 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+<title> Meters </title>
+{% endblock title %}
+{% block content %}
+	<div class="page-header mt-5 mb-0">
+		<div class="row">
+			<div class="col">
+				<h3 class="page-title">{{user_organization}}</h3>
+			</div>
+		</div>
+	</div>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{% url 'objects' %}">Ob`yektlar</a>
+          </li>
+		  <li class="breadcrumb-item">
+            <a href="{% url 'object_details' pk=meter.object.id %}">{{meter.object.name}}</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+           {{meter.name}}
+          </li>
+        </ol>
+
+<div class="text-right m-b-20">
+  <div class="btn-group btn-group-sm">
+    <a href="{% url 'edit_meter' pk=meter.id %}"
+      ><button
+        class="btn btn-white"
+        data-bs-toggle="tooltip"
+        title="Ob`yekt ma`lumotlarini o`zgartirish"
+      >
+        <i class="fas fa-pencil-alt"></i></button
+    ></a>
+    <button class="btn btn-white">PDF</button>
+    <button class="btn btn-white">
+      <i class="fas fa-print fa-lg"></i> Print
+    </button>
+  </div>
+</div>
+<div class="page-content">
+<div class="card shadow-sm p-3 mb-4 bg-body rounded">
+	<div class="card-header text-uppercase">
+		<h4 class="user-name"> {{meter.object}} </h4>
+		<p class="mb-2">{{meter.object.object_type}}</p>
+	</div>
+	<div class="card-body">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="">
+					<div class="row align-items-center">
+						<div class="col-auto">
+							<a href="#"> <img class="" style="width: 150px;" alt="Hisoblagich" src="{{ meter.flow_meter_type.photo.url }}"> </a>
+						</div>
+						<div class="col ml-md-n2 profile-user-info">
+							
+								<dl class="row">
+										<dt class="col-sm-3">O`lchov tarmog`i:</dt>
+										<dd class="col-sm-7"><u>{{meter.name}}</u></dd>
+											<dt class="col-sm-3">ID raqami:</dt>
+										  <dd class="col-sm-7">{{meter.meter_id}}</dd>
+										<dt class="col-sm-3">Hisoblagich turi:</dt>
+										  <dd class="col-sm-7">{{meter.flow_meter_type}}
+											<p> {{meter.flow_meter_serial_number}} </p>
+										  </dd>
+										
+										  
+										<dt class="col-sm-3">Hisoblagich yili:</dt>
+										  <dd class="col-sm-7">{{meter.flow_meter_year}} yil</dd>
+										<dt class="col-sm-3">Balans saqlovchi:</dt>
+										  <dd class="col-sm-7">{{meter.owner}}</dd>
+										<dt class="col-sm-3">Ta`minotchi:</dt>
+										  <dd class="col-sm-7">{{meter.contractor}}</dd>
+										</dl>
+										{% if meter.comment %}
+									<div class="about-text i"> <em>Isoh: {{meter.comment}} </em>
+										{% endif %}
+									</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+		<div class="card shadow-sm p-3 mb-4 bg-body rounded">
+			<div class="card card-table">
+				<div class="card-header">
+					<div class="row align-items-center">
+						<div class="col-6">
+							<h4 class="card-title">Hisoblagich sertificatilari</h4>
+						</div>
+						<div class="col-6">
+							<button type="button" class="btn btn-outline-success float-right">Qo'shish</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table table-hover table-center mb-0">
+							<thead>
+								<tr>
+								<th>Hisoblagich</th>
+								<th>Sertifikat raqami</th>
+								<th>Berilgan sana</th>
+								<th>Amalqilish muddati</th>
+								<th>Holati</th>
+								<th class="text-right">Tahrirlash</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for sertificate in sertificates %}
+								<tr>
+								<td>{{sertificate.meter.flow_meter_type}}
+								<p class="h6">{{sertificate.meter.flow_meter_serial_number}}</p>
+								</td>
+								<td>{{sertificate.number}}</td>
+								<td>{{sertificate.date_start}}</td>
+								<td>{{sertificate.date_end}}</td>
+								<td>
+									{% if sertificate.is_active == 'Amalda' %}
+									<div class="actions"> <a href="#" class="btn btn-sm bg-success-light mr-2">Active</a> </div>
+									{% else %}
+									<div class="actions"> <a href="#" class="btn btn-sm bg-danger-light mr-2">Inactive </a> </div>
+									{% endif %}
+								</td>
+								<td class="text-right">
+									<a class="text-muted" href="{% url 'edit_flowmeter_sertificate' pk=sertificate.id %}">
+										<i class="fas fa-pencil-alt m-r-5"></i></a>
+									<a class="text-muted" href="#">
+										<i class="fas fa-trash-alt m-r-5"></i></a>
+										
+								</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+<div class="row">
+	<div class="col-md-6">
+		<div class="card shadow-sm p-3 mb-4 bg-body rounded">
+			<div class="card">
+				<div class="card-header">
+					<h4 class="card-title">Hover Rows</h4>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table table-hover mb-0">
+							<thead>
+								<tr>
+								<th>Firstname</th>
+								<th>Lastname</th>
+								<th>Email</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+								<td>John</td>
+								<td>Doe</td>
+								<td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2943464147694c51484459454c074a4644">[email&#160;protected]</a></td>
+								</tr>
+								<tr>
+								<td>Mary</td>
+								<td>Moe</td>
+								<td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="84e9e5f6fdc4e1fce5e9f4e8e1aae7ebe9">[email&#160;protected]</a></td>
+								</tr>
+								<tr>
+								<td>July</td>
+								<td>Dooley</td>
+								<td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c4aeb1a8bd84a1bca5a9b4a8a1eaa7aba9">[email&#160;protected]</a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<div class="col-md-6">
+		<div class="card shadow-sm p-3 mb-4 bg-body rounded">
+			<div class="card">
+				<div class="card-header">
+					<h4 class="card-title">Hover Rows</h4>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table table-hover mb-0">
+							<thead>
+								<tr>
+								<th>Firstname</th>
+								<th>Lastname</th>
+								<th>Email</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+								<td>John</td>
+								<td>Doe</td>
+								<td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2943464147694c51484459454c074a4644">[email&#160;protected]</a></td>
+								</tr>
+								<tr>
+								<td>Mary</td>
+								<td>Moe</td>
+								<td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="84e9e5f6fdc4e1fce5e9f4e8e1aae7ebe9">[email&#160;protected]</a></td>
+								</tr>
+								<tr>
+								<td>July</td>
+								<td>Dooley</td>
+								<td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c4aeb1a8bd84a1bca5a9b4a8a1eaa7aba9">[email&#160;protected]</a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="card shadow-sm p-3 mb-5 bg-body rounded">
+	<div class="row">
+		<div class="col-12">
+			<span class="text-dark float-left">Toraytiruvchi qurilma (diafragma)lar soni:
+				{{amount}}
+			</span>
+
+			<div class="table-responsive">
+		   		<table class="table table-bordered border-primary" id="data">
+				  <thead valign="middle" align="center">
+					<tr>
+					  <th rowspan=3 valign="middle">#</th>
+					  <th rowspan=3 valign="middle">Ob`yekt</th>
+					  <th rowspan=3 valign="middle" >O`lchov tarmog`i</th>
+					  <th rowspan=3>TQ raqami</th>
+					  <th rowspan=3 class="border-top">E</th>
+					  <th rowspan=3 class="border-top">D<sub>нар</th>
+					  <th rowspan=3 class="border-top">d<sub>факт</th>
+					  <th colspan=11 class="border-bottom">Diafragma (TQ) hisob kitobi bo`yicha ma`lumotlar </th>
+					  
+	
+	
+					  <th rowspan=3 valign="middle" align="center">O`rnatilgan sana</th>
+					  <th rowspan=3 valign="middle" align="center">O`rnatilganligi</th>
+					  <th rowspan=3 valign="middle" align="center">Sertifikati sanasi</th>
+					  <th rowspan=3 valign="middle" align="center">Izoh</th>
+					  <th rowspan=3 valign="middle" align="center">Tahrirlash</th>
+					</tr>
+					<tr>
+	
+	
+					  <th rowspan=2>d<sub>рас</th>
+					  <th rowspan=2> &#946 </th>
+					  <th colspan=3 class="border-bottom">Bosim</th>
+					  <th class="border-bottom">Temperatura</th>
+					  <th colspan=3 class="border-bottom">Bosimlar farqi</th>
+					  <th colspan=2 class="border-bottom">Gaz sarfi</th>
+	
+	
+	
+					</tr>
+					<tr>
+	
+					  <th>P<sub>max.абс</sub></th>
+					  <th>P<sub>рас</sub></th>
+					  <th>ед.</th>
+					  <th>T<sub>рас</sub> (&#176C)</th>
+					  <th>&#916P<sub>max</sub></th>
+					  <th>&#916P<sub>min</sub></th>
+					  <th>ед.</th>
+					  <th>Q<sub>max</sub></th>
+					  <th>Q<sub>min</sub></th>
+	
+					</tr>
+				  </thead>
+				  <tbody>
+				 {% for orifice_plate in orifice_plates %}
+						<tr>
+							<td>{{ forloop.counter }}</td>
+							<td>{{ orifice_plate.meter.object.name }}</td>
+							<td><a href="#">{{ orifice_plate.meter.name }}</a></td>
+							<td>{{ orifice_plate.number }}</td>
+							<td>{{ orifice_plate.e }}</td>
+							<td>{{ orifice_plate.outer_diameter }}</td>
+							<td>{{ orifice_plate.d20 }}</td>
+							<td>{{ orifice_plate.d20_calculated }}</td>
+							<td>{{ orifice_plate.betta }}</td>
+							<td>{{ orifice_plate.p_max }}</td>
+							<td>{{ orifice_plate.pressure }}</td>
+							<td>{{ orifice_plate.p_unit }}</td>
+							<td>{{ orifice_plate.temperature }} &#176C</td>
+							<td>{{ orifice_plate.dp_max }}</td>
+							<td>{{ orifice_plate.dp_min }}</td>
+							<td>{{ orifice_plate.dp_unit }}</td>
+							<td>{{ orifice_plate.q_max }}</td>
+							<td>{{ orifice_plate.q_min }}</td>
+							<td>{{ orifice_plate.installed_date|date:"d.m.Y" }}</td>
+							<td>{{ orifice_plate.installed }}</td>
+	
+	
+							<td class="">
+	
+							<div class="row">
+								<div class="col">
+									<a href="#"> <i class="align-middle" data-feather="edit" style="color: black;"></i> </a>
+									<a href="#"> <i class="align-middle" data-feather="trash-2" style="color: black;"></i> </a>
+								</div>
+							</div>
+							</td>
+	
+						</tr>
+					{% endfor %}
+				  </tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<br>
+
+	{% endblock content %}
+

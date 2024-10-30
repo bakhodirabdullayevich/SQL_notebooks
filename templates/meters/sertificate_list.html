@@ -1,0 +1,138 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+<title> Sertifikatlar </title>
+{% endblock title %}
+{% block content %}
+<section class="comp-section">
+    <div class="section-header">
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active" aria-current="page">
+                        Ob`yektlar
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+<div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <div class="mt-3">
+                    <h4 class="card-title float-left mt-2">{{ user_organization }}</h4>
+                    <a href="{% url 'add_object' %}" class="btn btn-primary float-right">
+                        Ob`yekt qo'shish
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+					<div class="row">
+						<div class="col-12">
+							<div class="card">
+								<div class="card-header">
+                                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+
+                                         <a href="#"><button type="button" class="btn btn-outline-dark"> Qo'shish </button> </a>
+
+                                         <a href="{% url 'active_sertificates' %}"><button type="button" class="btn btn-outline-success"> Amalda </button> </a>
+                                         <a href="{% url 'not_active_sertificates' %}"><button type="button" class="btn btn-outline-secondary"> Eski </button> </a>
+                                         <a href="{% url 'all_sertificates' %}"><button type="button" class="btn btn-outline-info"> Barcha </button> </a>
+
+                                    </div>
+                                    <small class="float-end text-navy">Sertifikatlar soni: {{amount}}</small>
+                                 </div>
+
+                                    <div class="card-body booking_card">
+                                    <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="">
+                                            <tr>
+                                                <th>№</th>
+                                                <th>Tarmoq</th>
+                                                <th>Hisoblagich</th>
+                                                <th>Hisoblagich</th>
+                                                <th>Zavod raqami </th>
+                                                <th>Sertifikat raqami</th>
+                                                <th>Sertifikat sanasi</th>
+                                                <th>Holati</th>
+                                                {% if user_umg %}
+                                                <th>Tahrirlash</th>
+                                                {% endif %}
+
+                                            </tr>
+                                        </thead>
+                                        {% for sertificate in page_obj %}
+                                        <tbody>
+                                            <tr>
+                                                <td>{{forloop.counter}}</td>
+                                                <td><a href="#">{{sertificate.meter.name}}</a></td>
+                                                <td>
+                                                {{sertificate.meter.flow_meter_type.flow_meter_type}}
+                                                </td>
+                                                <td>
+                                                <img src="{{ sertificate.meter.flow_meter_type.photo.url }}" class="img-fluid rounded-circle" width="60" height="60" alt="gaz hisoblagich">
+                                                </td>
+                                                <td>{{sertificate.meter.flow_meter_serial_number}}</td>
+                                                {% if sertificate.url_sertificate %}
+                                                <td><a href="{{ sertificate.url_sertificate.url }}" class="text-primary" target="_blank"> {{sertificate.number}}</a></td>
+                                                {% else %}
+                                                    {% if user_umg %}
+                                                <td><a href="#" class="text-danger">{{sertificate.number}}</a></td>
+                                                    {% else %}
+                                                <td><a href="#" class="text-danger">{{sertificate.number}}</a></td>
+                                                    {% endif %}
+                                                {% endif %}
+                                                <td>{{sertificate.date|date:"d.m.Y"}}</td>
+                                                   {% if sertificate.is_active == "Amalda" %}
+                                                <td class="">
+                                                    <span class="badge bg-success text-white ms-2" > Amalda</span>
+                                                </td>
+                                                    {% else %}
+                                                <td class="">
+                                                    <span class="badge bg-dark text-white ms-2" > Eski </span>
+                                                </td>
+                                                     {% endif %}
+                                                {% if user_umg %}
+                                                <td>
+                                                <div class="row">
+                                                        <div class="col">
+                                                    <a href="#"> <i class="align-middle" data-feather="edit" style="color: black;"></i> </a>
+                                                    <a href="#"> <i class="align-middle" data-feather="trash-2" style="color: black;"></i> </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                {% endif %}
+                                            </tr>
+                                        </tbody>
+                                        {% endfor %}
+
+                                    </table>
+                                    </div>
+
+                                            <div id="custom">
+                                                  {% if page_obj.has_previous %}
+                                                  <a href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                  </a>
+                                                <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+                                                  {% endif %}
+                                                <a href="#">{{ page_obj.number }}</a>
+                                                   {% if page_obj.has_next %}
+                                                <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+                                                  <a href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                  </a>
+                                                  {% endif %}
+                                              </div>
+</div>
+                                </div>
+
+{% endblock %}
+
+

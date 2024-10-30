@@ -1,0 +1,149 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+    <title>Tarmoqlar</title>
+    <link rel="stylesheet" href="{% static 'plugins/fontawesome/css/fontawesome.min.css' %}">
+	<link rel="stylesheet" href="{% static 'assets/plugins/datatables/datatables.min.css' %}">
+{% endblock title %}
+{% block content %}
+<section class="comp-section">
+<div class="section-header">
+</div>
+  <div class="row">
+    <div class="col-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{% url 'objects' %}">Ob`yektlar</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            O`lchov tarmoqlari
+          </li>
+        </ol>
+      </nav>
+    </div>
+   </div>
+</section>
+<div class="page-header">
+					<div class="row align-items-center">
+						<div class="col">
+								<h4 class="card-title float-left mt-2">{{user_organization}}</h4>
+                                <a href="#" class="btn btn-primary float-right veiwbutton ">Add Booking</a>
+						</div>
+					</div>
+	<small class="float-right">O'lchov tarmoqlari soni: {{amount}}</small>
+				</div>
+
+<!-- <div class="row">
+<div class="col-sm-12">
+<div class="d-grid gap-5 d-md-flex justify-content-md-end">
+  <a href="#" class="btn btn-outline-dark active" aria-current="page">Active link</a>
+  <a href="#" class="btn btn-outline-dark">Link</a>
+  <a href="#" class="btn btn-outline-dark">Link</a>
+</div> -->
+						<div class="card card-table ">
+							<div class="card-body booking_card">
+								<div class="table-responsive">
+									<table class="table table-stripped table table-hover table-center mb-0">
+											<tr>
+												<th> ID</th>
+												<th> object</th>
+												<th> name</th>
+												<th> flow_meter_type</th>
+												<th>Date</th>
+												<th>Time</th>
+												<th>Arrival Date</th>
+												<th>Depature Date</th>
+												<th>Email ID</th>
+												<th>Status</th>
+												<th class="text-right">Actions</th>
+											</tr>
+										</thead>
+										 {% for meter in meters %}
+										<tbody>
+											<tr>
+												<td>{{meter.meter_id}}</td>
+												<td>{{meter.object}}</td>
+												<td><a href="{% url 'meter_details' pk=meter.id%}">{{meter.name}}</a></td>
+												<td>
+													<h2 class="table-avatar">
+                                                    <a href="#" class="avatar avatar-sm mr-2"><img src="{{ meter.flow_meter_type.photo.url }}" class="avatar-img rounded-circle"  alt="F"></a>
+                                                    <a href="#">{{meter.flow_meter_type}} <span>{{meter.flow_meter_serial_number}}</span></a>
+                                                    </h2>
+                                                </td>
+												<td>{{meter.flow_meter_year}}</td>
+												<td>{{meter.diameter}}</td>
+												<td>{{meter.owner}}</td>
+												<td>{{meter.contractor}}</td>
+												<td>{{meter.comment}}</td>
+												<td>
+													<div class="actions"> <a href="#" class="btn btn-sm bg-success-light mr-2">Active</a> </div>
+												</td>
+												<td class="text-right">
+													<div class="dropdown dropdown-action"> <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v ellipse_color"></i></a>
+														<div class="dropdown-menu dropdown-menu-right"> <a class="dropdown-item" href="edit-booking.html"><i class="fas fa-pencil-alt m-r-5"></i> Edit</a> <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_asset"><i class="fas fa-trash-alt m-r-5"></i> Delete</a> </div>
+													</div>
+												</td>
+											</tr>
+											<tr>
+												 {% endfor %}
+										</tbody>
+									</table>
+								</div>
+
+							</div>
+						</div>
+
+						<div class="">
+                        <ul class="pagination justify-content-end mb-0">
+                            {% if meters.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ meters.previous_page_number }}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ meters.previous_page_number }}">
+                                    {{ meters.previous_page_number }}
+                                </a>
+                            </li>
+                            {% endif %}
+                            <li class="page-item">
+                                <a class="page-link" href="#">{{ meters.number }}</a>
+                            </li>
+                            {% if meters.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ meters.next_page_number }}">
+                                    {{ meters.next_page_number }}
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ meters.next_page_number }}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+
+			<div id="delete_asset" class="modal fade delete-modal" role="dialog">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-body text-center"> <img src="assets/img/sent.png" alt="" width="50" height="46">
+							<h3 class="delete_class">Are you sure want to delete this Asset?</h3>
+							<div class="m-t-20"> <a href="#" class="btn btn-white" data-dismiss="modal">Close</a>
+								<button type="submit" class="btn btn-danger">Delete</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+{% endblock %}
+{% block script %}
+    <script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+	<script src="{% static 'plugins/datatables/datatables.min.js' %}"></script>
+{% endblock script %}
+

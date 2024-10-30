@@ -1,0 +1,34 @@
+{% extends 'index.html' %} {% load crispy_forms_tags %} {% block title %}
+<title>Delete Object</title>
+{% endblock title %} {% block content %}
+<ol class="breadcrumb mt-5 mb-0">
+  <li class="breadcrumb-item">
+    <a href="{% url 'objects' %}">Ob`yektlar</a>
+  </li>
+  <li class="breadcrumb-item active" aria-current="page">
+    {{object.name}}
+  </li>
+</ol>
+
+<div class="page-header">
+  <div class="row align-items-center">
+    <div class="col">
+      <h3 class="page-title mt-5">"{{object.name}}"</h3>
+      <h3 class="page-title mt-5">{{object.object_type}} ma`lumotlarini o'chirmoqchimisiz?</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <form method="post">
+        {% csrf_token %}
+        <a href="{% url 'objects' %}">
+          <button type="button" class="btn btn-outline-success mt-3">Yo'q</button></a
+        >
+        <button type="submit" class="btn btn-outline-danger mt-3">Xa</button>
+        
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

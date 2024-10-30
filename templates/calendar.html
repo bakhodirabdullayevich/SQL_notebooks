@@ -1,0 +1,203 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+<title> Kalendar </title>
+<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+<style>
+    .calendar-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .navigation-buttons {
+      display: flex;
+      justify-content: space-between;
+      width: 400px;
+      margin-bottom: 10px;
+    }
+
+    .weekdays, .month-name {
+      display: grid;
+      grid-template-columns: repeat(7, 100px);
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 100px);
+      border: 1px solid #ddd;
+    }
+
+    .calendar .day {
+      width: 100px;
+      height: 100px;
+      border: 1px solid #ddd;
+      position: relative;
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      padding: 5px;
+      font-size: 18px;
+    }
+
+    .calendar .day span {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+    }
+
+    .calendar .today span {
+      background-color: #007bff;
+      color: #fff;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: auto;
+    }
+
+    .invisible {
+      visibility: hidden;
+    }
+
+    .weekend {
+      background-color: #f0f0f0;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 400px;
+      margin-bottom: 10px;
+    }
+
+    .header h4 {
+      margin: 0;
+    }
+  </style>
+{% endblock title %}
+{% block content %}
+
+<div class="container calendar-container">
+    <!-- Навигационные кнопки -->
+
+    <div class="page-header">
+      <div class="row align-items-center">
+
+          <button class="btn btn-primary alighn-center" id="prev-month">O`tgan oy</button>
+          <button class="btn btn-success" id="reset-today">Bugungi kun</button>
+          <button class="btn btn-primary" id="next-month">Keyingi oy</button>
+        </div>
+
+
+
+    <!-- Название месяца на узбекском языке -->
+    <div class="month-name" id="month-name"></div>
+
+    <!-- Дни недели на узбекском языке -->
+    <div class="weekdays">
+      <div>Du</div>
+      <div>Se</div>
+      <div>Cho</div>
+      <div>Pa</div>
+      <div>Ju</div>
+      <div>Sha</div>
+      <div>Ya</div>
+    </div>
+
+    <!-- Календарь -->
+    <div class="calendar" id="calendar"></div>
+  </div>
+    </div>
+      </div>
+
+  <script>
+    const calendarElement = document.getElementById('calendar');
+    const monthNameElement = document.getElementById('month-name');
+    const prevMonthButton = document.getElementById('prev-month');
+    const nextMonthButton = document.getElementById('next-month');
+    const resetTodayButton = document.getElementById('reset-today');
+
+    const uzbekMonths = [
+      "Yanvar", "Fevral", "Mart", "Aprel", "May", "Iyun",
+      "Iyul", "Avgust", "Sentabr", "Oktabr", "Noyabr", "Dekabr"
+    ];
+
+    const uzbekWeekdays = ['Du', 'Se', 'Cho', 'Pa', 'Ju', 'Sha', 'Ya'];
+
+    let currentDate = new Date();
+
+    function renderCalendar() {
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth();
+
+      // Обновляем название месяца
+      monthNameElement.textContent = `${uzbekMonths[month]} ${year}`;
+
+      // Очищаем календарь
+      calendarElement.innerHTML = '';
+
+      // Определяем первый день месяца и количество дней в месяце
+      const firstDayOfMonth = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      // Заполняем пустыми ячейками до первого дня месяца
+      for (let i = 0; i < (firstDayOfMonth + 6) % 7; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.classList.add('day', 'invisible'); // Невидимые пустые ячейки
+        calendarElement.appendChild(emptyCell);
+      }
+
+      // Заполняем числами
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dayElement = document.createElement('div');
+        dayElement.classList.add('day');
+
+        const dayContent = document.createElement('span');
+        dayContent.textContent = day;
+        dayElement.appendChild(dayContent);
+
+        // Определяем текущий день
+        const today = new Date();
+        if (year === today.getFullYear() && month === today.getMonth() && day === today.getDate()) {
+          dayElement.classList.add('today');
+        }
+
+        // Выделяем выходные дни
+        const weekDay = new Date(year, month, day).getDay();
+        if (weekDay === 0 || weekDay === 6) {
+          dayElement.classList.add('weekend'); // Серый цвет для выходных
+        }
+
+        calendarElement.appendChild(dayElement);
+      }
+    }
+
+    // Перелистывание месяцев
+    prevMonthButton.addEventListener('click', () => {
+      currentDate.setMonth(currentDate.getMonth() - 1);
+      renderCalendar();
+    });
+
+    nextMonthButton.addEventListener('click', () => {
+      currentDate.setMonth(currentDate.getMonth() + 1);
+      renderCalendar();
+    });
+
+    // Возврат к сегодняшнему дню
+    resetTodayButton.addEventListener('click', () => {
+      currentDate = new Date();
+      renderCalendar();
+    });
+
+    // Изначально рендерим календарь
+    renderCalendar();
+  </script>
+{% endblock content %}

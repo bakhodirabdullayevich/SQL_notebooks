@@ -1,0 +1,46 @@
+{% extends 'index.html' %} {% load static %} {% block title %}
+<title>MGQB</title>
+{% endblock title %} {% block content %}
+<ol class="breadcrumb mt-5">
+  <li class="breadcrumb-item">
+    <a href="#">Dashboard</a>
+  </li>
+  <li class="breadcrumb-item active" aria-current="page">Tarkibiy tuzilmalar</li>
+</ol>
+<div class="row mt-4">
+{% for organization in organizations %}
+<div class="col-sm-6">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title border-bottom">{{organization.name}}</h4>
+      <div class="user-Location mt-1">
+        <i class="fas fa-map-marker-alt"></i>
+         {{organization.address}}
+      </div>
+
+      <div class="row align-items-center mt-3">
+        <div class="col-auto profile-image">
+          <img class="" style="width: 100px;" alt="Hisoblagich" src="{% static 'img/utg.svg' %}" />
+        </div>
+        <div class="col ml-md-n2 profile-user-info">
+          <dl class="row mt-2">
+            <dt class="col-sm-4">Telefon:</dt>
+            <dd class="col-sm-8">{{organization.phone_number}}</dd>
+            <dt class="col-sm-4">E-mail:</dt>
+            <dd class="col-sm-8">{{organization.e_mail}}</dd>
+            <dt class="col-sm-4">Ob`yektlar soni:</dt>
+            <dd class="col-sm-8">{{organization.object.count}} ta</dd>
+            <dt class="col-sm-4">Tarmoqlar soni:</dt>
+            <dd class="col-sm-8">{{organization.meter.count}} ta</dd>
+          </dl>
+        </div>
+        <!-- <div class="col-auto">
+          <a href="#" class="btn btn-outline-primary">Batafsil</a>
+        </div> -->
+      </div>
+      </div>
+</div>
+</div>
+{% endfor %}
+</div>
+{% endblock %}

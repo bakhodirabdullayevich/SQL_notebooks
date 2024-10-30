@@ -1,0 +1,159 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+    <title>Diafragmalar</title>
+{% endblock title %}
+{% block content %}
+<section class="comp-section">
+<div class="section-header">
+</div>
+  <div class="row">
+    <div class="col-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{% url 'objects' %}">Ob`yektlar</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            Toraytiruvchi qurilma (diafragma)lar
+          </li>
+        </ol>
+      </nav>
+    </div>
+   </div>
+</section>
+<div class="page-header">
+    <div class="row align-items-center">
+		<div class="col">
+			<h4 class="card-title float-left mt-2">{{user_organization}}</h4>
+		</div>
+	</div>
+	<span class="badge rounded-pill bg-info text-dark float-left">Toraytiruvchi qurilma (diafragma)lar soni:
+        {{amount}}
+    </span>
+    <div class="x_content">
+        <div class="col col-md-12 text-end">
+                <button type="button" id="export_button" class="btn btn-success btn-sm float-right" ><i class="far fa-file-excel"></i>&nbsp Excel</button>
+
+                </div>
+                  <br>
+</div>
+
+
+
+          <div class="table-responsive">
+    
+       <table class="table table-bordered border-primary" id="data">
+              <thead valign="middle" align="center">
+                <tr>
+                  <th rowspan=3 valign="middle">#</th>
+                    {% if user_umg is None %}
+                  <th rowspan=3 valign="middle">MGQB</th>
+                    {% else %}
+                    {% endif %}
+                  <th rowspan=3 valign="middle">Ob`yekt</th>
+                  <th rowspan=3 valign="middle" >O`lchov tarmog`i</th>
+                  <th rowspan=3>№</th>
+                  <th rowspan=3>E</th>
+                  <th rowspan=3>D<sub>нар</th>
+                  <th rowspan=3>d<sub>факт</th>
+                  
+
+
+                  <th rowspan=3 valign="middle" align="center">O`rnatilgan sana</th>
+                  <th rowspan=3 valign="middle" align="center">O`rnatilganligi</th>
+                  <th rowspan=3 valign="middle" align="center">Sertifikati sanasi</th>
+                  <th rowspan=3 valign="middle" align="center">Izoh</th>
+                  <th rowspan=3 valign="middle" align="center">Tahrirlash</th>
+                </tr>
+                <tr>
+
+
+                  <th rowspan=2>d<sub>рас</th>
+                  <th rowspan=2> &#946 </th>
+                  <th colspan=3>Bosim</th>
+                  <th>Temperatura</th>
+                  <th colspan=3>Bosimlar farqi</th>
+                  <th colspan=2>Gaz sarfi</th>
+
+
+
+                </tr>
+                <tr>
+
+                  <th>P<sub>max.абс</sub></th>
+                  <th>P<sub>рас</sub></th>
+                  <th>ед.</th>
+                  <th>T<sub>рас</sub> (&#176C)</th>
+                  <th>&#916P<sub>max</sub></th>
+                  <th>&#916P<sub>min</sub></th>
+                  <th>ед.</th>
+                  <th>Q<sub>max</sub></th>
+                  <th>Q<sub>min</sub></th>
+
+                </tr>
+              </thead>
+              <tbody>
+             {% for orifice_plate in orifice_plates %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ orifice_plate.meter.object.name }}</td>
+                        <td><a href="#">{{ orifice_plate.meter.name }}</a></td>
+                        <td>{{ orifice_plate.number }}</td>
+                        <td>{{ orifice_plate.e }}</td>
+                        <td>{{ orifice_plate.outer_diameter }}</td>
+                        <td>{{ orifice_plate.d20 }}</td>
+                        <td>{{ orifice_plate.d20_calculated }}</td>
+                        <td>{{ orifice_plate.betta }}</td>
+                        <td>{{ orifice_plate.p_max }}</td>
+                        <td>{{ orifice_plate.pressure }}</td>
+                        <td>{{ orifice_plate.p_unit }}</td>
+                        <td>{{ orifice_plate.temperature }} &#176C</td>
+                        <td>{{ orifice_plate.dp_max }}</td>
+                        <td>{{ orifice_plate.dp_min }}</td>
+                        <td>{{ orifice_plate.dp_unit }}</td>
+                        <td>{{ orifice_plate.q_max }}</td>
+                        <td>{{ orifice_plate.q_min }}</td>
+                        <td>{{ orifice_plate.installed_date|date:"d.m.Y" }}</td>
+                        <td>{{ orifice_plate.installed }}</td>
+
+
+                        <td class="">
+
+                        <div class="row">
+                            <div class="col">
+                                <a href="#"> <i class="align-middle" data-feather="edit" style="color: black;"></i> </a>
+                                <a href="#"> <i class="align-middle" data-feather="trash-2" style="color: black;"></i> </a>
+                            </div>
+                        </div>
+                        </td>
+
+                    </tr>
+                {% endfor %}
+              </tbody>
+
+
+       </table>
+    </div>
+  
+
+{% endblock %}
+{% block script %}
+
+<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+  <script>
+  function html_table_to_excel(type)
+	 {
+		 var data = document.getElementById('data');
+		 var file = XLSX.utils.table_to_book(data, {sheet: "sheet1"});
+		 XLSX.write(file, { bookType: type, bookSST: true, type: 'base64' });
+		 XLSX.writeFile(file, 'file.' + type);
+	 }
+	 const export_button = document.getElementById('export_button');
+	 export_button.addEventListener('click', () =>  {
+		 html_table_to_excel('xlsx');
+	 });
+  </script>
+
+{% endblock script %}
+
