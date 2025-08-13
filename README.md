@@ -1,1 +1,1 @@
-# project_for_utg
+SQL для Анализа данных
